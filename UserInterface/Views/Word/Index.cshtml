@@ -1,0 +1,62 @@
+﻿@using Core.Dto
+@model List<WordDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/Main_Layout.cshtml";
+}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="\lib\jquery\dist\jquery.js"></script>
+
+<h1>Your Dictionary</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>English</th>
+            <th>Turkish</th>
+            <th>Add Favorites</th>
+            <th>Add Unknows</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.EnglishWord</td>
+                <td>@item.TurkishWord</td>
+                <td><a href="#" class="btn btn-success">Favorites</a></td>
+                <td><a href="#" class="btn btn-success">Unknows</a></td>
+                <td>
+                    <form action="/Word/DeleteWord/@item.Id" method="POST" id="deleteForm">
+                        <a href="#" class="btn btn-warning" onclick="showConfirmation(event, @item.Id)">Delete</a>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function showConfirmation(event, id) {
+        event.preventDefault(); // Linkin varsayılan davranışını engelle
+
+        swal({
+            title: "Emin misiniz?",
+            text: "Bu kelimeyi silmek istediğinizden emin misiniz?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    document.getElementById("deleteForm").action = "/Word/DeleteWord/" + id; // Formun action'ını güncelle
+                    document.getElementById("deleteForm").submit(); // Formu submit et
+                } else {
+                    swal("Kelime Silinmedi !!!", "warning")
+                }
+            });
+    }
+</script>

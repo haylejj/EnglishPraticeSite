@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Repository;
 using Repository.Repositories;
 using Repository.UnitOfWorks;
+using Service.Mapping;
 using Service.Services;
 using System.Reflection;
 
@@ -18,6 +19,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IWordRepository,WordRepository>();
 builder.Services.AddScoped<IWordService,WordService>();
+
+builder.Services.AddAutoMapper(typeof(MapProfile));
 
 builder.Services.AddDbContext<AppDbContext>(x =>
 {

@@ -1,4 +1,6 @@
-﻿using Core.Entity;
+﻿using AutoMapper;
+using Core.Dto;
+using Core.Entity;
 using Core.Repositories;
 using Core.Service;
 using Core.UnitOfWorks;
@@ -16,15 +18,18 @@ namespace Service.Services
     {
         IWordRepository _wordRepository;
         IUnitOfWork _unitOfWork;
+        IMapper _mapper;
 
-        public WordService(IWordRepository wordRepository, IUnitOfWork unitOfWork)
+        public WordService(IWordRepository wordRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _wordRepository=wordRepository;
             _unitOfWork=unitOfWork;
+            _mapper=mapper;
         }
 
-        public async Task AddAsync(Word word)
+        public async Task AddAsync(WordDto wordDto)
         {
+            var word=_mapper.Map<Word>(wordDto);
             await _wordRepository.AddAsync(word);
             await _unitOfWork.CommitAsync();
         }
@@ -40,13 +45,16 @@ namespace Service.Services
             return await _wordRepository.AnyAsync(expression);
         }
 
-        public async Task<IEnumerable<Word>> GetAllAsync()
+        public async Task<IEnumerable<WordDto>> GetAllAsync()
         {
-            return await _wordRepository.GetAll().ToListAsync();
+            var words = await _wordRepository.GetAll().ToListAsync();
+            var wordsDto = _mapper.Map<List<WordDto>>(words);
+            return wordsDto;
         }
 
         public async Task<Word> GetByIdAsync(int id)
         {
+           
             return await _wordRepository.GetByIdAsync(id);
         }
 
@@ -57,7 +65,7 @@ namespace Service.Services
 
         public async Task RemoveAsync(Word word)
         {
-             _wordRepository.Remove(word);
+            _wordRepository.Remove(word);
             await  _unitOfWork.CommitAsync();
         }
 
@@ -67,8 +75,9 @@ namespace Service.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task UpdateAsync(Word word)
+        public async Task UpdateAsync(WordDto wordDto)
         {
+            var word = _mapper.Map<Word>(wordDto);
             _wordRepository.Update(word);
             await _unitOfWork.CommitAsync();
         }
