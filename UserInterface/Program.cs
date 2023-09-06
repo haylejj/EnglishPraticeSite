@@ -21,6 +21,8 @@ builder.Services.AddScoped<IWordRepository,WordRepository>();
 builder.Services.AddScoped<IWordService,WordService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+builder.Services.AddScoped<IFavoriteService,FavoriteService>();
+builder.Services.AddScoped<IUnknowsService,UnknowsService>();
 
 
 builder.Services.AddAutoMapper(typeof(MapProfile));

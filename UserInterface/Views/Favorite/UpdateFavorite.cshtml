@@ -1,0 +1,54 @@
+﻿@using Core.Entity
+@model Favorite
+@{
+    ViewData["Title"] = "UpdateFavorite";
+    Layout = "~/Views/Shared/Main_Layout.cshtml";
+}
+<style>
+    body {
+        background-color: #f2f2f2;
+        background-image: url('image\\foto.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="\lib\jquery\dist\jquery.js"></script>
+
+<h2 class="text-center" style="margin-top:50px;">Update Favorite </h2>
+
+@using (Html.BeginForm("UpdateFavorite", "Favorite", FormMethod.Post))
+{
+    <div class="row" style="margin-top:300px;">
+        <div class="column text-center">
+            <label style="color:blue; font-weight:bold;">English :</label>
+            @Html.TextBoxFor(x=>x.EnglishWord,new {@class="custom-input"})
+        </div>
+        <div class="column text-center" style="margin-left: 100px; margin-right: 100px;">
+            <label style="color:red; font-weight:bold;">Turkish :</label>
+            @Html.TextBoxFor(x=>x.TurkishWord,new {@class= "custom-input"})
+        </div>
+        <div class="column text-center" style="margin-left: 100px; margin-right: 100px; display: none;">
+            <label style="color:red; font-weight:bold;">Word Id :</label>
+            @Html.TextBoxFor(x=>x.WordId,new {@class= "custom-input"})
+        </div>
+
+        <div class="column text-center">
+            <button class="btn btn-outline-info" id="btn3" style="background-color:orange; color:white;">Save</button>
+        </div>
+    </div>
+}
+@* <script>
+    $('#btn3').click(function (event) {
+        event.preventDefault(); // Formun otomatik submit olmasını engeller
+
+        swal({
+            title: "Başarılı",
+            text: "Kelime başarıyla güncellendi!",
+            icon: "success",
+            button: "Tamam",
+        }).then(function () {
+            $('form').submit(); // Formun submit işlemini gerçekleştirir
+        });
+    });
+</script> *@
