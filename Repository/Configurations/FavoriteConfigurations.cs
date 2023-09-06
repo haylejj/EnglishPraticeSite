@@ -17,6 +17,7 @@ namespace Repository.Configurations
             builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x=>x.EnglishWord).IsRequired().HasMaxLength(30);
             builder.Property(x=>x.TurkishWord).IsRequired().HasMaxLength(30);
+            
         }
     }
 }
