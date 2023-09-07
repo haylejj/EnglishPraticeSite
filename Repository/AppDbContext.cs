@@ -16,6 +16,8 @@ namespace Repository
             
         }
         public DbSet<Word> Words { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Unknows> Unknows { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

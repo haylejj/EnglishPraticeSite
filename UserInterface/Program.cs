@@ -23,7 +23,8 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 builder.Services.AddScoped<IFavoriteService,FavoriteService>();
 builder.Services.AddScoped<IUnknowsService,UnknowsService>();
-
+builder.Services.AddScoped<IFavoriteRepository,FavoriteRepository>();
+builder.Services.AddScoped<IUnknowsRepository,UnknowsRepository>();
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
 

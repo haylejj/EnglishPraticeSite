@@ -12,8 +12,15 @@ namespace Service.Services
 {
     public class FavoriteService : GenericService<Favorite>, IFavoriteService
     {
-        public FavoriteService(IGenericRepository<Favorite> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        private readonly IFavoriteRepository _favoriteRepository;
+        public FavoriteService(IGenericRepository<Favorite> repository, IUnitOfWork unitOfWork, IFavoriteRepository favoriteRepository) : base(repository, unitOfWork)
         {
+            _favoriteRepository=favoriteRepository;
+        }
+
+        public async Task<Favorite> GetLastFavorite()
+        {
+            return await _favoriteRepository.GetLastFavorite();
         }
     }
 }

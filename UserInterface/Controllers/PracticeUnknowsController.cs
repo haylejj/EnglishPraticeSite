@@ -1,27 +1,31 @@
-﻿using Core.Entity;
-using Core.Service;
+﻿using Core.Service;
 using Microsoft.AspNetCore.Mvc;
+using Service.Services;
+using System;
+using System.Security.Policy;
 
 namespace UserInterface.Controllers
 {
-    public class PracticeController : Controller
+    public class PracticeUnknowsController : Controller
     {
-        private readonly IWordService _wordService;
+        private readonly IUnknowsService _unknowsService;
         private static Random random = new Random();
-        public PracticeController(IWordService wordService)
+        public PracticeUnknowsController(IUnknowsService unknowsService)
         {
-            _wordService=wordService;
+            _unknowsService=unknowsService;
         }
+
 
         public async Task<IActionResult> Index()
         {
-            string newEnglishWord =await  getNewWord();
+            string newEnglishWord = await getNewWord();
             return View((object)newEnglishWord);
         }
-        private bool IsCorrect(string turkish,string english)
+        
+        private bool IsCorrect(string turkish, string english)
         {
-            var word = _wordService.Where(x => x.EnglishWord==english).FirstOrDefault();
-            if(word != null && word.TurkishWord==turkish)
+            var word = _unknowsService.Where(x => x.EnglishWord==english).FirstOrDefault();
+            if (word != null && word.TurkishWord==turkish)
             {
                 return true;
             }
@@ -29,15 +33,17 @@ namespace UserInterface.Controllers
         }
         private async Task<string> getNewWord()
         {
-            var lastWord= await _wordService.getLastWord();
+            var lastWord = await _unknowsService.GetLastUnknows();
             int index = random.Next(1, lastWord.Id+1);
-            var newWord = await _wordService.GetByIdAsync(index);
-            if(newWord != null) {
+            var newWord = await _unknowsService.GetByIdAsync(index);
+            if (newWord != null)
+            {
                 return newWord.EnglishWord;
             }
-            while (newWord == null) {
+            while (newWord == null)
+            {
                 index = random.Next(1, lastWord.Id+1);
-                newWord = await _wordService.GetByIdAsync(index);
+                newWord = await _unknowsService.GetByIdAsync(index);
             }
             return newWord.EnglishWord;
         }
@@ -48,7 +54,7 @@ namespace UserInterface.Controllers
         }
         public async Task<IActionResult> GetNewEnglishWord()
         {
-            string newEnglishWord =await  getNewWord();
+            string newEnglishWord = await getNewWord();
             return Content(newEnglishWord);
         }
     }

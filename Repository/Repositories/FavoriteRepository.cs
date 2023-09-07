@@ -1,5 +1,6 @@
 ﻿using Core.Entity;
 using Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,11 @@ namespace Repository.Repositories
     {
         public FavoriteRepository(AppDbContext context) : base(context)
         {
+        }
+
+        public async Task<Favorite> GetLastFavorite()
+        {
+            return await _context.Favorites.OrderByDescending(x => x.Id).FirstOrDefaultAsync();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Core.Entity;
 using Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,11 @@ namespace Repository.Repositories
     {
         public UnknowsRepository(AppDbContext context) : base(context)
         {
+        }
+
+        public Task<Unknows> GetLastUnknows()
+        {
+            return _context.Unknows.OrderByDescending(x => x.Id).FirstOrDefaultAsync();
         }
     }
 }

@@ -12,8 +12,15 @@ namespace Service.Services
 {
     public class UnknowsService : GenericService<Unknows>, IUnknowsService
     {
-        public UnknowsService(IGenericRepository<Unknows> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        private readonly IUnknowsRepository _repository;
+        public UnknowsService(IGenericRepository<Unknows> repository, IUnitOfWork unitOfWork, IUnknowsRepository unknowsRepository) : base(repository, unitOfWork)
         {
+            _repository=unknowsRepository;
+        }
+
+        public async Task<Unknows> GetLastUnknows()
+        {
+           return await _repository.GetLastUnknows();
         }
     }
 }

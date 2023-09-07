@@ -78,10 +78,16 @@
                                         <li class="nav-item"><a class="nav-link" href="/Word/AddWord">Add New Word</a></li>
                                         <li class="nav-item"><a class="nav-link" href="/Favorite/Index">Favorites</a></li>
                                         <li class="nav-item"><a class="nav-link" href="/Unknows/Index">Unknows</a></li>
-                                        <li>
-                                            <a class="btn btn-primary btn-sm" href="/Practice/Index" style="font-size:14px;">
+                                        <li class="nav-item dropdown">
+                                            <a class="dropdown-toggle btn btn-primary btn-sm" href="#" style="font-size:14px;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fas fa-play"></i> Let's Practice
                                             </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <a class="dropdown-item" style="color:orange" href="/Practice/Index">With Your Dictionary</a>
+                                                <a class="dropdown-item" style="color:orange" href="/PracticeFavorite/Index">With Your Favorite List</a>
+                                                <a class="dropdown-item" style="color:orange" href="/PracticeUnknows/Index">Wit Your Unknows List</a>
+
+                                            </div>
                                         </li>
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle" href="#" id="practiceDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -150,3 +156,19 @@
     </div>
 </body>
 </html>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var dropdownToggle = document.querySelector(".dropdown-toggle");
+        var dropdownMenu = document.querySelector(".dropdown-menu");
+
+        dropdownToggle.addEventListener("click", function() {
+            dropdownMenu.classList.toggle("show");
+        });
+
+        document.addEventListener("click", function(event) {
+            if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove("show");
+            }
+        });
+    });
+</script>
