@@ -1,14 +1,17 @@
-﻿@using Core.Entity
-@model List<Favorite>
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@using Core.Entity
+@model PagedList<Favorite>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/Main_Layout.cshtml";
 }
+<h1 class="text-center animated-heading" style="margin-top:50px; font-style:italic;">Favorite List</h1>
+<br />
 
-<h1>Favorite List</h1>
-
-<table class="table table-bordered">
-    <thead>
+<table class="table table-bordered table-striped table-warning" >
+    <thead class="bg-secondary">
         <tr>
             <th>#</th>
             <th>English</th>
@@ -32,4 +35,16 @@
         }
     </tbody>
 </table>
-
+@{
+    var renderOptions = new PagedListRenderOptions
+            {
+                DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToIndividualPages = true
+            };
+}
+<div class="pagedList" style="margin-top: 20px;">
+    @Html.PagedListPager((IPagedList)Model,page=> Url.Action("Index",new {page}),renderOptions)
+</div>

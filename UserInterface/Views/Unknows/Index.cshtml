@@ -1,14 +1,16 @@
-﻿@using Core.Entity
-@model List<Unknows>
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@using Core.Entity
+@model PagedList<Unknows>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/Main_Layout.cshtml";
 }
-
-<h1>Unknows List</h1>
+<h1 class="text-center animated-heading" style="margin-top:50px; font-style:italic;">Unknows List</h1>
 <br />
-<table class="table table-bordered">
-    <thead>
+<table class="table table-bordered table-striped table-warning">
+    <thead class="bg-secondary">
         <tr>
             <th>#</th>
             <th>English</th>
@@ -32,4 +34,17 @@
         }
     </tbody>
 </table>
+@{
+    var renderOptions = new PagedListRenderOptions
+            {
+                DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToIndividualPages = true
+            };
+}
+<div class="pagedList">
+    @Html.PagedListPager((IPagedList)Model,page=> Url.Action("Index",new {page}),renderOptions)
+</div>
 

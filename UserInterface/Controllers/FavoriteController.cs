@@ -3,6 +3,7 @@ using Core.Entity;
 using Core.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace UserInterface.Controllers
 {
@@ -20,9 +21,10 @@ namespace UserInterface.Controllers
             _unknowsService=unknowsService;
         }
 
-        public async Task< IActionResult> Index()
+        public async Task< IActionResult> Index(int page=1)
         {
-            return View(await _favoriteService.GetAllAsync());
+            var favorities = await _favoriteService.GetAllAsync();
+            return View(favorities.ToPagedList(page,5));
         }
         public async Task<IActionResult> AddFavorite(int id)
         {
