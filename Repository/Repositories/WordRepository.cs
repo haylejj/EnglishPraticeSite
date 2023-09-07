@@ -17,5 +17,10 @@ namespace Repository.Repositories
         public WordRepository(AppDbContext context) : base(context)
         {
         }
+
+        public async Task<Word> getLastWord()
+        {
+            return await _context.Words.OrderByDescending(x => x.Id).FirstOrDefaultAsync();
+        }
     }
 }

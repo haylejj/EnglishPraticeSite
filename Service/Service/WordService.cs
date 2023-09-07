@@ -15,9 +15,16 @@ using System.Threading.Tasks;
 namespace Service.Services
 {
     public class WordService : GenericService<Word>, IWordService
-    { 
-        public WordService(IGenericRepository<Word> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
+    {
+        private readonly IWordRepository _wordRepository;
+        public WordService(IGenericRepository<Word> repository, IUnitOfWork unitOfWork, IWordRepository wordRepository) : base(repository, unitOfWork)
         {
+            _wordRepository=wordRepository;
+        }
+
+        public async Task<Word> getLastWord()
+        {
+            return await _wordRepository.getLastWord();
         }
     }
 }
