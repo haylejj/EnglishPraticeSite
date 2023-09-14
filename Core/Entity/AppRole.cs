@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 namespace Core.Entity
 {
     public class AppRole:IdentityRole
-    {
+    { 
     }
 }

@@ -8,5 +8,6 @@ namespace Core.Service
 {
     public interface IMemberService
     {
+        Task LogOutAsync();
     }
 }

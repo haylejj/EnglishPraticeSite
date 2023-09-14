@@ -14,7 +14,6 @@ namespace Service.Service
     {
 
         private readonly UserManager<AppUser> _userManager;
-
         public RegisterService(UserManager<AppUser> userManager)
         {
             _userManager=userManager;
@@ -23,7 +22,6 @@ namespace Service.Service
         public async Task<(bool, IEnumerable<IdentityError>?)> RegisterAsync(RegisterViewModel request)
         {
             var result=await _userManager.CreateAsync(new AppUser() { UserName=request.UserName, Email=request.Email,PhoneNumber=request.Phone},request.Password);
-
             if (!result.Succeeded)
             {
                 return (false, result.Errors);

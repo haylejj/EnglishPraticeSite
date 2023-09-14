@@ -1,7 +1,9 @@
-﻿@{
+﻿
+
+@{
     Layout = null;
 }
-@model RegisterViewModel
+@model LoginViewModel
 
 <link href="\lib\bootstrap\dist\css\bootstrap.css" rel="stylesheet" />
 
@@ -33,6 +35,15 @@
     .mask {
         min-height: 100vh;
     }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+    }
+
+    .form-check-label {
+        margin-left: 5px;
+    }
 </style>
 
 
@@ -42,50 +53,27 @@
             <div class="col-12 col-md-9 col-lg-7 col-xl-6">
                 <div class="card" style="border-radius: 15px;">
                     <div class="card-body p-5">
-                        @if (TempData["SuccessMessage"]!=null)
-                        {
-                            <div class="alert alert-info" role="alert">@TempData["SuccessMessage"]</div>
-                        }
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
-                        <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+        
+                        <h2 class="text-uppercase text-center mb-5">Login</h2>
 
-                        <form asp-controller="Register" asp-action="Register" method="post">
-
-                            <div class="form-group">
-                                <label class="form-label" for="UserName" asp-for="UserName"></label>
-                                <input asp-for="UserName" class="form-control" />
-                                <span asp-validation-for="UserName" class="text-danger"></span>
-                            </div>
-
+                        <form asp-controller="Login" asp-action="Login" asp-route-returnUrl="@Context.Request.Query["returnUrl"]" method="post">
                             <div class="form-group">
                                 <label class="form-label" for="Email" asp-for="Email"></label>
                                 <input asp-for="Email" class="form-control" />
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="Phone" asp-for="Phone"></label>
-                                <input asp-for="Phone" class="form-control" />
-                                <span asp-validation-for="Phone" class="text-danger"></span>
-                            </div>
-
                             <div class="form-group">
                                 <label class="form-label" for="Password" asp-for="Password"></label>
                                 <input asp-for="Password" class="form-control" />
                                 <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>     
+                            <div class="form-group text-right">
+                                <input asp-for="RememberMe" style="margin-top:10px;" class="form-control-input" type="checkbox" />
+                                <label class="form-check-label" for="RememberMe"  asp-for="RememberMe"></label>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="PasswordConfirm" asp-for="PasswordConfirm"></label>
-                                <input asp-for="PasswordConfirm" class="form-control" />
-                                <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+                            <div class="form-group text-center">
+                                    <button class="btn btn-outline-secondary  " style="margin-top:10px;" asp" type="submit">Login</button>                             
                             </div>
-                            <div class="form-group">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <button class="btn btn-outline-secondary " style="margin-top:10px;" asp" type="submit">Register</button>
-                                    <p class="registration-link mb-0">Already Have a Account ? <a href="/Login/LogIn">Log in</a></p>
-                                </div>
-                            </div>
-
                         </form>
                     </div>
                 </div>
@@ -93,6 +81,7 @@
         </div>
     </div>
 </div>
+
 
 
 

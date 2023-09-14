@@ -24,34 +24,7 @@
     <link rel="stylesheet" href="/main/theme/plugins/slick/slick-theme.css">
     <link rel="stylesheet" href="/main/theme/plugins/colorbox/colorbox.css">
     <link rel="stylesheet" href="/main/theme/css/style.css">
-    <style>
-        .dropdown-menu a:nth-child(1),
-        .dropdown-menu a:nth-child(2) {
-            font: bold;
-            color: red;
-        }
 
-        .dropdown-menu a:nth-child(3),
-        .dropdown-menu a:nth-child(4) {
-            font: bold;
-            color: green;
-        }
-
-        .dropdown-menu a:nth-child(5),
-        .dropdown-menu a:nth-child(6) {
-            font: bold;
-            color: blue;
-        }
-
-        .dropdown-menu {
-            text-align: center;
-        }
-
-            .dropdown-menu a {
-                display: block;
-                text-align: center;
-            }
-    </style>
 </head>
 <body>
     <div class="body-inner">
@@ -103,11 +76,20 @@
                                                 <a class="dropdown-item" href="#">C2 Words</a>
                                             </div>
                                         </li> *@
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/Unknows/Index">
-                                                <i class="fas fa-user"></i> Sign Up
-                                            </a>
-                                        </li>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" id="practiceDropdown"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-account"></i> @User.Identity.Name
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" asp-action="LogOut" asp-controller="Member">Log Out</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                </ul>
+                                            </li>
+                                        }
+                                        
                                     </ul>
                                 </div>
                             </nav>

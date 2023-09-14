@@ -4,6 +4,9 @@ using Core.Entity;
 using Core.Repositories;
 using Core.Service;
 using Core.UnitOfWorks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using Repository.Repositories;
@@ -11,6 +14,7 @@ using Repository.UnitOfWorks;
 using Service.Mapping;
 using Service.Service;
 using Service.Services;
+using System.Configuration;
 using System.Reflection;
 using UserInterface.Extensions;
 
@@ -18,6 +22,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IWordRepository,WordRepository>();
@@ -43,8 +49,21 @@ builder.Services.AddDbContext<AppDbContext>(x =>
     });
 });
 
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>();
+
 builder.Services.AddIdentityWithExtension();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    var cookieBuilder = new CookieBuilder();
+
+    cookieBuilder.Name="Cookie";
+
+    options.LoginPath = new PathString("/Login/LogIn");
+    options.Cookie = cookieBuilder;
+    options.ExpireTimeSpan = TimeSpan.FromDays(10);
+    options.SlidingExpiration=true;
+});
+
 
 var app = builder.Build();
 
@@ -61,11 +80,19 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Word}/{action=Index}/{id?}");
-
+    pattern: "{controller=Register}/{action=Register}/{id?}");
+//app.Use(async (context, next) =>
+//{
+//    if (!context.User.Identity.IsAuthenticated)
+//    {
+//        context.Response.Redirect("/Login/LogIn");
+//        return;
+//    }
+//    await next();
+//});
 app.Run();

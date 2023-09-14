@@ -2,12 +2,14 @@
 using Core.Dto;
 using Core.Entity;
 using Core.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 
 namespace UserInterface.Controllers
 {
+ 
     public class WordController : Controller
     {
         private readonly IWordService _wordService;
