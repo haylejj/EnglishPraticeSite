@@ -1,5 +1,6 @@
 ﻿using Core.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Service.Services;
 using System;
 using System.Security.Policy;
@@ -37,15 +38,16 @@ namespace UserInterface.Controllers
             int index = random.Next(1, lastWord.Id+1);
             var newWord = await _unknowsService.GetByIdAsync(index);
             if (newWord != null)
-            {
-                return newWord.EnglishWord;
-            }
-            while (newWord == null)
-            {
-                index = random.Next(1, lastWord.Id+1);
-                newWord = await _unknowsService.GetByIdAsync(index);
-            }
-            return newWord.EnglishWord;
+                {
+                    return newWord.EnglishWord;
+                }
+             while (newWord == null)
+                {
+                    index = random.Next(1, lastWord.Id+1);
+                    newWord = await _unknowsService.GetByIdAsync(index);
+                }
+             return newWord.EnglishWord;
+
         }
         public IActionResult CheckTranslation(string turkishWord, string englishWord)
         {

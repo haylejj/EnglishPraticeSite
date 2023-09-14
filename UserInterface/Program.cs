@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Core.Entity;
 using Core.Repositories;
 using Core.Service;
 using Core.UnitOfWorks;
@@ -8,8 +9,10 @@ using Repository;
 using Repository.Repositories;
 using Repository.UnitOfWorks;
 using Service.Mapping;
+using Service.Service;
 using Service.Services;
 using System.Reflection;
+using UserInterface.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +28,10 @@ builder.Services.AddScoped<IFavoriteService,FavoriteService>();
 builder.Services.AddScoped<IUnknowsService,UnknowsService>();
 builder.Services.AddScoped<IFavoriteRepository,FavoriteRepository>();
 builder.Services.AddScoped<IUnknowsRepository,UnknowsRepository>();
+builder.Services.AddScoped<IMemberService,MemberService>();
+builder.Services.AddScoped<IRegisterService,RegisterService>();
+builder.Services.AddScoped<ILoginService,LoginService>();
+
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
@@ -36,8 +43,8 @@ builder.Services.AddDbContext<AppDbContext>(x =>
     });
 });
 
-
-
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentityWithExtension();
 
 var app = builder.Build();
 

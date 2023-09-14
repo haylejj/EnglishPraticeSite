@@ -72,5 +72,6 @@ namespace UserInterface.Controllers
             await _wordService.UpdateAsync(word);
             return RedirectToAction(nameof(Index));
         }
+        
     }
 }
