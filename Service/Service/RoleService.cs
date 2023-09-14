@@ -1,0 +1,79 @@
+﻿using Core.Entity;
+using Core.Service;
+using Core.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Service.Service
+{
+    public class RoleService:IRoleService
+    {
+        private readonly RoleManager<AppRole> _roleManager;
+        private readonly UserManager<AppUser> _userManager;
+
+        public RoleService(RoleManager<AppRole> roleManager, UserManager<AppUser> userManager)
+        {
+            _roleManager=roleManager;
+            _userManager=userManager;
+        }
+
+        public async Task<List<RoleViewModel>> GetRoleListAsync()
+        {
+            var roles = await _roleManager.Roles.AsNoTracking().ToListAsync();
+            var roleViewModel=roles.Select(x=> new RoleViewModel() { Id=x.Id, Name=x.Name}).ToList();
+            return roleViewModel;
+        }
+        public async Task<(bool,IEnumerable<IdentityError>?)> CreateRoleAsync(RoleCreateViewModel request)
+        {
+            var result=await _roleManager.CreateAsync(new AppRole() {Name=request.Name});
+
+            if(!result.Succeeded)
+            {
+                return (false,result.Errors);
+            }
+            else { return (true,null); }
+        }
+        public async Task<(bool,RoleUpdateViewModel?)> FindByIdAsync(string id)
+        {
+            var role=await _roleManager.FindByIdAsync(id);
+            if (role==null)
+            {
+                return (false,null);
+            }
+            var roleUpdateViewModel=new RoleUpdateViewModel() { Id=role.Id ,Name=role.Name };
+            return (true,roleUpdateViewModel);
+        }
+
+        public async Task<(bool, IEnumerable<IdentityError>?)> UpdateRoleAsync(RoleUpdateViewModel request)
+        {
+            var role=await _roleManager.FindByIdAsync(request.Id);
+            if (role==null)
+            {
+                return (false,null);
+            }
+            role.Name=request.Name;
+            var result=await _roleManager.UpdateAsync(role);
+            if(!result.Succeeded) { return (false,result.Errors);}
+
+            else { return (true,null); }
+        }
+        public async Task<(bool, IEnumerable<IdentityError>?)> DeleteRoleAsync(string id)
+        {
+            var role = await _roleManager.FindByIdAsync(id);
+
+            var result = await _roleManager.DeleteAsync(role);
+            if (!result.Succeeded)
+            {
+                return (false, result.Errors);
+
+            }
+            else { return (true,null); }
+        }
+    }
+}

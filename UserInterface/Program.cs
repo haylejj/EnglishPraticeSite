@@ -37,6 +37,8 @@ builder.Services.AddScoped<IUnknowsRepository,UnknowsRepository>();
 builder.Services.AddScoped<IMemberService,MemberService>();
 builder.Services.AddScoped<IRegisterService,RegisterService>();
 builder.Services.AddScoped<ILoginService,LoginService>();
+builder.Services.AddScoped<IAdminService,AdminService>();
+builder.Services.AddScoped<IRoleService,RoleService>();
 
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
@@ -83,6 +85,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapControllerRoute(
+    name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Register}/{action=Register}/{id?}");
