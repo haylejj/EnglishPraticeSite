@@ -3,15 +3,10 @@ using Core.Service;
 using Core.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Service
 {
-    public class AdminService:IAdminService
+    public class AdminService : IAdminService
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
@@ -28,7 +23,7 @@ namespace Service.Service
         {
             var users = await _userManager.Users.AsNoTracking().ToListAsync();
 
-            var userViewModel= users.Select(x => new UserViewModel { Id=x.Id, UserName=x.UserName, Email=x.Email }).ToList();
+            var userViewModel = users.Select(x => new UserViewModel { Id=x.Id, UserName=x.UserName, Email=x.Email }).ToList();
             return userViewModel;
         }
     }

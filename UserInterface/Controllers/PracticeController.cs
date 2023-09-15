@@ -1,9 +1,10 @@
-﻿using Core.Entity;
-using Core.Service;
+﻿using Core.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace UserInterface.Controllers
 {
+    [Authorize]
     public class PracticeController : Controller
     {
         private readonly IWordService _wordService;
@@ -15,13 +16,13 @@ namespace UserInterface.Controllers
 
         public async Task<IActionResult> Index()
         {
-            string newEnglishWord =await  getNewWord();
+            string newEnglishWord = await getNewWord();
             return View((object)newEnglishWord);
         }
-        private bool IsCorrect(string turkish,string english)
+        private bool IsCorrect(string turkish, string english)
         {
             var word = _wordService.Where(x => x.EnglishWord==english).FirstOrDefault();
-            if(word != null && word.TurkishWord==turkish)
+            if (word != null && word.TurkishWord==turkish)
             {
                 return true;
             }
@@ -29,13 +30,15 @@ namespace UserInterface.Controllers
         }
         private async Task<string> getNewWord()
         {
-            var lastWord= await _wordService.getLastWord();
+            var lastWord = await _wordService.getLastWord();
             int index = random.Next(1, lastWord.Id+1);
             var newWord = await _wordService.GetByIdAsync(index);
-            if(newWord != null) {
+            if (newWord != null)
+            {
                 return newWord.EnglishWord;
             }
-            while (newWord == null) {
+            while (newWord == null)
+            {
                 index = random.Next(1, lastWord.Id+1);
                 newWord = await _wordService.GetByIdAsync(index);
             }
@@ -48,7 +51,7 @@ namespace UserInterface.Controllers
         }
         public async Task<IActionResult> GetNewEnglishWord()
         {
-            string newEnglishWord =await  getNewWord();
+            string newEnglishWord = await getNewWord();
             return Content(newEnglishWord);
         }
     }

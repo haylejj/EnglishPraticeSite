@@ -1,4 +1,5 @@
 ﻿using Core.Entity;
+using Microsoft.AspNetCore.Identity;
 using Repository;
 using Service.CustomValidations;
 
@@ -8,6 +9,10 @@ namespace UserInterface.Extensions
     {
         public static void AddIdentityWithExtension(this IServiceCollection services)
         {
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan=TimeSpan.FromHours(1);
+            });
             services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
@@ -16,9 +21,12 @@ namespace UserInterface.Extensions
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength=6;
                 options.Password.RequireNonAlphanumeric=false;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+                options.Lockout.MaxFailedAccessAttempts = 5;
             })
             .AddPasswordValidator<PasswordValidator>()
             .AddUserValidator<UserValidator>()
+            .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<AppDbContext>();
         }
     }

@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using Core.Entity;
 using Core.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 
 namespace UserInterface.Controllers
 {
+    [Authorize]
     public class UnknowsController : Controller
     {
         private readonly IMapper _mapper;
@@ -22,14 +24,14 @@ namespace UserInterface.Controllers
             _favoriteService=favoriteService;
         }
 
-        public async Task<IActionResult> Index(int page=1)
+        public async Task<IActionResult> Index(int page = 1)
         {
             var unknows = await _unknowsService.GetAllAsync();
-            return View(unknows.ToPagedList(page,5));
+            return View(unknows.ToPagedList(page, 5));
         }
         public async Task<IActionResult> AddUnknows(int id)
         {
-            var product=await _wordService.GetByIdAsync(id);
+            var product = await _wordService.GetByIdAsync(id);
             if (product!=null)
             {
                 var unknow = new Unknows
@@ -51,7 +53,7 @@ namespace UserInterface.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUnknows(Unknows unknows)
         {
-            var word=await _wordService.GetByIdAsync(unknows.WordId);
+            var word = await _wordService.GetByIdAsync(unknows.WordId);
             var favorite = await _favoriteService.Where(x => x.WordId==word.Id).SingleOrDefaultAsync();
             if (favorite!=null)
             {
@@ -61,16 +63,16 @@ namespace UserInterface.Controllers
             }
             word.TurkishWord = unknows.TurkishWord;
             word.EnglishWord= unknows.EnglishWord;
-           
+
 
             await _unknowsService.UpdateAsync(unknows);
             await _wordService.UpdateAsync(word);
-            
+
             return RedirectToAction("Index", "Word");
         }
         public async Task<IActionResult> DeleteUnknows(int id)
         {
-            var unknow =await _unknowsService.GetByIdAsync(id);
+            var unknow = await _unknowsService.GetByIdAsync(id);
             await _unknowsService.RemoveAsync(unknow);
             return RedirectToAction("Index");
         }

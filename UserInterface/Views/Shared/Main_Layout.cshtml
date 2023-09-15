@@ -76,13 +76,32 @@
                                                 <a class="dropdown-item" href="#">C2 Words</a>
                                             </div>
                                         </li> *@
-                                        @if (User.Identity.IsAuthenticated)
+                                        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
                                         {
                                             <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="#" id="practiceDropdown"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <a class="nav-link dropdown-toggle" href="#" id="practiceDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i class="fas fa-account"></i> @User.Identity.Name
                                                 </a>
                                                 <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" asp-action="UserList" asp-controller="Admin" asp-area="Admin">User List</a></li>
+                                                    <li><a class="dropdown-item" asp-action="RoleList" asp-controller="Role" asp-area="Admin">Role List</a></li>
+                                                    <li><a class="dropdown-item" href="/Member/UserEdit">Update Your Profile</a></li>
+                                                    <li><a class="dropdown-item" href="/Member/PasswordChange">Password Change</a></li>
+                                                    <li><a class="dropdown-item" href="/Member/LogOut">Log Out</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                </ul>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" id="practiceDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-account"></i> @User.Identity.Name
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" asp-action="UserEdit" asp-controller="Member">Update Your Profile</a></li>
+                                                    <li><a class="dropdown-item" href="/Member/PasswordChange">Password Change</a></li>
                                                     <li><a class="dropdown-item" asp-action="LogOut" asp-controller="Member">Log Out</a></li>
                                                     <li><hr class="dropdown-divider"></li>
                                                     <li><a class="dropdown-item" href="#">Something else here</a></li>

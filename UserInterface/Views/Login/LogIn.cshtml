@@ -71,7 +71,10 @@
                                 <input asp-for="RememberMe" style="margin-top:10px;" class="form-control-input" type="checkbox" />
                                 <label class="form-check-label" for="RememberMe"  asp-for="RememberMe"></label>
                             </div>
-                            <div class="form-group text-center">
+                            <div class="form-group">
+                                <a class=" btn btn-outline-secondary btn-sm float-end" asp-controller="Login" asp-action="ForgetPassword">Şifremi Unuttum</a>
+                            </div>
+                            <div class="form-group ">
                                     <button class="btn btn-outline-secondary  " style="margin-top:10px;" asp" type="submit">Login</button>                             
                             </div>
                         </form>

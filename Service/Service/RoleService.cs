@@ -3,13 +3,6 @@ using Core.Service;
 using Core.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Service
 {
@@ -90,7 +83,7 @@ namespace Service.Service
             foreach (var role in roles)
             {
                 var assignToRoleViewModel = new AssignToRoleViewModel() { Id=role.Id, Name=role.Name };
-                if(userRoles.Contains(role.Name))
+                if (userRoles.Contains(role.Name))
                 {
                     assignToRoleViewModel.Exist = true;
                 }
@@ -99,17 +92,17 @@ namespace Service.Service
             return roleViewModel;
 
         }
-        public async Task AssignRoleAsync(string id,List<AssignToRoleViewModel> request)
+        public async Task AssignRoleAsync(string id, List<AssignToRoleViewModel> request)
         {
-            var user=await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
 
             foreach (var role in request)
             {
                 if (role.Exist)
                 {
-                    await _userManager.AddToRoleAsync(user,role.Name);
+                    await _userManager.AddToRoleAsync(user, role.Name);
                 }
-                else await _userManager.RemoveFromRoleAsync(user,role.Name);
+                else await _userManager.RemoveFromRoleAsync(user, role.Name);
             }
         }
     }

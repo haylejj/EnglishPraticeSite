@@ -1,12 +1,8 @@
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Core.Entity;
+using Core.OptionsModel;
 using Core.Repositories;
 using Core.Service;
 using Core.UnitOfWorks;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using Repository.Repositories;
@@ -14,7 +10,6 @@ using Repository.UnitOfWorks;
 using Service.Mapping;
 using Service.Service;
 using Service.Services;
-using System.Configuration;
 using System.Reflection;
 using UserInterface.Extensions;
 
@@ -23,23 +18,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IWordRepository,WordRepository>();
-builder.Services.AddScoped<IWordService,WordService>();
+builder.Services.AddScoped<IWordRepository, WordRepository>();
+builder.Services.AddScoped<IWordService, WordService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
-builder.Services.AddScoped<IFavoriteService,FavoriteService>();
-builder.Services.AddScoped<IUnknowsService,UnknowsService>();
-builder.Services.AddScoped<IFavoriteRepository,FavoriteRepository>();
-builder.Services.AddScoped<IUnknowsRepository,UnknowsRepository>();
-builder.Services.AddScoped<IMemberService,MemberService>();
-builder.Services.AddScoped<IRegisterService,RegisterService>();
-builder.Services.AddScoped<ILoginService,LoginService>();
-builder.Services.AddScoped<IAdminService,AdminService>();
-builder.Services.AddScoped<IRoleService,RoleService>();
-
+builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+builder.Services.AddScoped<IUnknowsService, UnknowsService>();
+builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
+builder.Services.AddScoped<IUnknowsRepository, UnknowsRepository>();
+builder.Services.AddScoped<IMemberService, MemberService>();
+builder.Services.AddScoped<IRegisterService, RegisterService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
@@ -53,7 +48,10 @@ builder.Services.AddDbContext<AppDbContext>(x =>
 
 
 builder.Services.AddIdentityWithExtension();
-
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.FromMinutes(30);
+});
 builder.Services.ConfigureApplicationCookie(options =>
 {
     var cookieBuilder = new CookieBuilder();
@@ -61,6 +59,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     cookieBuilder.Name="Cookie";
 
     options.LoginPath = new PathString("/Login/LogIn");
+    options.AccessDeniedPath=new PathString("/Member/AccessDenied");
     options.Cookie = cookieBuilder;
     options.ExpireTimeSpan = TimeSpan.FromDays(10);
     options.SlidingExpiration=true;

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Core.Entity
+﻿namespace Core.Entity
 {
     public class Unknows
     {
@@ -13,6 +7,6 @@ namespace Core.Entity
         public string? TurkishWord { get; set; }
         public DateTime CreatedTime { get; set; }
         public int WordId { get; set; }
-        public Word ?Word { get; set; }
+        public Word? Word { get; set; }
     }
 }

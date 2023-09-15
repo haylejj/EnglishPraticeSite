@@ -1,10 +1,12 @@
 ﻿using Core.Service;
 using Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserInterface.Extensions;
 
 namespace UserInterface.Areas.Admin.Controllers
 {
+    [Authorize(Roles ="admin")]
     [Area("Admin")]
     public class RoleController : Controller
     {
@@ -17,7 +19,7 @@ namespace UserInterface.Areas.Admin.Controllers
 
         public async Task<IActionResult> RoleList()
         {
-            var roles=await _roleService.GetRoleListAsync();
+            var roles = await _roleService.GetRoleListAsync();
             return View(roles);
         }
         public IActionResult RoleCreate()
@@ -27,16 +29,16 @@ namespace UserInterface.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> RoleCreate(RoleCreateViewModel request)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View();
             }
 
-           var (isSuccess,error)= await _roleService.CreateRoleAsync(request);
-            
-            if (!isSuccess) 
+            var (isSuccess, error)= await _roleService.CreateRoleAsync(request);
+
+            if (!isSuccess)
             {
-                ModelState.AddModelErrorList(error!.Select(x=>x.Description).ToList());
+                ModelState.AddModelErrorList(error!.Select(x => x.Description).ToList());
                 return View();
             }
             TempData["SuccessMessage"]="Yeni rol başarıyla oluşturuldu";
@@ -45,8 +47,8 @@ namespace UserInterface.Areas.Admin.Controllers
 
         public async Task<IActionResult> RoleUpdate(string roleId)
         {
-            var (isSuccess,role)=await _roleService.FindByIdReturnRoleUpdateViewModelAsync(roleId);
-            
+            var (isSuccess, role)=await _roleService.FindByIdReturnRoleUpdateViewModelAsync(roleId);
+
             if (!isSuccess)
             {
                 throw new Exception("Güncellenecek rol bulunamamıştır.");
@@ -61,11 +63,11 @@ namespace UserInterface.Areas.Admin.Controllers
                 return View();
             }
 
-            var (isSuccess,error)=await _roleService.UpdateRoleAsync(request);
-           
-            if(!isSuccess)
+            var (isSuccess, error)=await _roleService.UpdateRoleAsync(request);
+
+            if (!isSuccess)
             {
-                ModelState.AddModelErrorList(error!.Select(x=>x.Description).ToList());
+                ModelState.AddModelErrorList(error!.Select(x => x.Description).ToList());
                 return View();
             }
             else { TempData["SuccessMessage"]="Güncelleme İşlemi Başarıyla Yapıldı"; }
@@ -80,20 +82,20 @@ namespace UserInterface.Areas.Admin.Controllers
                 return View();
             }
             else { TempData["SuccessMessage"]="Rol başarıyla silinmiştir"; }
-            return RedirectToAction("RoleList","Role");
+            return RedirectToAction("RoleList", "Role");
         }
 
         public async Task<IActionResult> AssignToRole(string id)
         {
-            var userRoles=await _roleService.GetRoleByIdReturnAssignToRoleAsync(id);
+            var userRoles = await _roleService.GetRoleByIdReturnAssignToRoleAsync(id);
             ViewBag.Id=id;
             return View(userRoles);
         }
         [HttpPost]
         public async Task<IActionResult> AssignToRole(string id, List<AssignToRoleViewModel> requestList)
         {
-            await _roleService.AssignRoleAsync(id,requestList);
-            return RedirectToAction("UserList","Admin");
+            await _roleService.AssignRoleAsync(id, requestList);
+            return RedirectToAction("UserList", "Admin");
         }
     }
 }

@@ -1,13 +1,8 @@
 ﻿using Core.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.Repositories
 {
-    public interface IUnknowsRepository:IGenericRepository<Unknows>
+    public interface IUnknowsRepository : IGenericRepository<Unknows>
     {
         Task<Unknows> GetLastUnknows();
     }

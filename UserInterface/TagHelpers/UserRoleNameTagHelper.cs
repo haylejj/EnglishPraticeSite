@@ -1,12 +1,11 @@
 ﻿using Core.Entity;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Text;
 
 namespace UserInterface.TagHelpers
 {
-    public class UserRoleNameTagHelper:TagHelper
+    public class UserRoleNameTagHelper : TagHelper
     {
         public string UserId { get; set; } = null!;
         private readonly UserManager<AppUser> _userManager;

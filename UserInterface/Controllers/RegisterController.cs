@@ -1,10 +1,12 @@
 ﻿using Core.Service;
 using Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserInterface.Extensions;
 
 namespace UserInterface.Controllers
 {
+    
     public class RegisterController : Controller
     {
         private readonly IRegisterService _registerService;
@@ -13,7 +15,7 @@ namespace UserInterface.Controllers
         {
             this._registerService=registerService;
         }
-        
+
         public IActionResult Register()
         {
             return View();
@@ -25,11 +27,11 @@ namespace UserInterface.Controllers
             {
                 return View();
             }
-            var (isSuccess,errors)=await _registerService.RegisterAsync(request);
+            var (isSuccess, errors)=await _registerService.RegisterAsync(request);
 
-            if(!isSuccess)
+            if (!isSuccess)
             {
-                ModelState.AddModelErrorList(errors!.Select(x=>x.Description).ToList());
+                ModelState.AddModelErrorList(errors!.Select(x => x.Description).ToList());
                 return View();
             }
 

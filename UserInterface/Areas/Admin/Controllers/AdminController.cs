@@ -1,9 +1,10 @@
 ﻿using Core.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Service.Service;
 
 namespace UserInterface.Areas.Admin.Controllers
 {
+    [Authorize(Roles ="admin")]
     [Area("Admin")]
     public class AdminController : Controller
     {
@@ -16,7 +17,7 @@ namespace UserInterface.Areas.Admin.Controllers
 
         public async Task<IActionResult> UserList()
         {
-            var users=await _adminService.GetUsersAsync();
+            var users = await _adminService.GetUsersAsync();
             return View(users);
         }
     }

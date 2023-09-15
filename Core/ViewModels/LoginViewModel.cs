@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Core.ViewModels
 {
@@ -17,10 +12,10 @@ namespace Core.ViewModels
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Şifre alanı boş bırakılamaz")]
         [Display(Name = "Şifre :")]
-        public string ?Password { get; set; }
+        public string? Password { get; set; }
 
 
-        [Display(Name ="Beni Hatırla")]
+        [Display(Name = "Beni Hatırla")]
         public bool RememberMe { get; set; }
     }
 }

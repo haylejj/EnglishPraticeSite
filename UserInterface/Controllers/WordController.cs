@@ -9,7 +9,7 @@ using X.PagedList;
 
 namespace UserInterface.Controllers
 {
- 
+    [Authorize]
     public class WordController : Controller
     {
         private readonly IWordService _wordService;
@@ -24,10 +24,10 @@ namespace UserInterface.Controllers
             _unknowsService=unknowsService;
         }
 
-        public async Task< IActionResult> Index(int page=1)
+        public async Task<IActionResult> Index(int page = 1)
         {
             var words = await _wordService.GetAllAsync();
-            return View(words.ToPagedList(page,10));
+            return View(words.ToPagedList(page, 10));
         }
         [HttpGet]
         public IActionResult AddWord()
@@ -37,21 +37,21 @@ namespace UserInterface.Controllers
         [HttpPost]
         public async Task<IActionResult> AddWord(WordDto wordDto)
         {
-            var word=_mapper.Map<Word>(wordDto);
+            var word = _mapper.Map<Word>(wordDto);
             await _wordService.AddAsync(word);
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
         public async Task<IActionResult> DeleteWord(int id)
         {
-            var word=await _wordService.GetByIdAsync(id);
+            var word = await _wordService.GetByIdAsync(id);
             await _wordService.RemoveAsync(word);
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         public async Task<IActionResult> UpdateWord(int id)
         {
-            var word=await _wordService.GetByIdAsync(id);
+            var word = await _wordService.GetByIdAsync(id);
             return View(word);
         }
         [HttpPost]
@@ -74,6 +74,6 @@ namespace UserInterface.Controllers
             await _wordService.UpdateAsync(word);
             return RedirectToAction(nameof(Index));
         }
-        
+
     }
 }
