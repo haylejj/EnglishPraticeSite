@@ -45,7 +45,7 @@ namespace UserInterface.Areas.Admin.Controllers
 
         public async Task<IActionResult> RoleUpdate(string roleId)
         {
-            var (isSuccess,role)=await _roleService.FindByIdAsync(roleId);
+            var (isSuccess,role)=await _roleService.FindByIdReturnRoleUpdateViewModelAsync(roleId);
             
             if (!isSuccess)
             {
@@ -81,6 +81,19 @@ namespace UserInterface.Areas.Admin.Controllers
             }
             else { TempData["SuccessMessage"]="Rol başarıyla silinmiştir"; }
             return RedirectToAction("RoleList","Role");
+        }
+
+        public async Task<IActionResult> AssignToRole(string id)
+        {
+            var userRoles=await _roleService.GetRoleByIdReturnAssignToRoleAsync(id);
+            ViewBag.Id=id;
+            return View(userRoles);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AssignToRole(string id, List<AssignToRoleViewModel> requestList)
+        {
+            await _roleService.AssignRoleAsync(id,requestList);
+            return RedirectToAction("UserList","Admin");
         }
     }
 }
